@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package proto;
+
+
+message ConnectInfo {
+  string name = 1;
+  string auth_key = 2;
+}
+
+//message PlayerInfoList {
+//  repeated PlayerInfo list = 1;
+//}
+
+message Message {
+  string text = 1;
+//  string timestamp = 2;
+}
+
+message Connect {
+  ConnectInfo player = 1;
+  bool active = 2;
+}
+
+message ActionRespond {
+  string message = 1;
+}
+
+message Close {}
+
+message Empty {}
+
+
+message PlayerAction {
+  string sender_auth_key = 1;
+  int32 target_id = 2;
+}
+
+service Mafia {
+  rpc CreateStream(Connect) returns (stream Message);
+//  rpc BroadcastMessage(Message) returns (Close);
+  rpc Kill(PlayerAction) returns (ActionRespond);
+  rpc CheckIfMafia(PlayerAction) returns (ActionRespond);
+  rpc ExposeMafia(PlayerAction) returns (ActionRespond);
+  rpc VoteForExecution(PlayerAction) returns (ActionRespond);
+  rpc SkipVote(PlayerAction) returns (ActionRespond);
+  rpc GetPlayers(Empty) returns (Message);
+  rpc StartNewGame(Empty) returns (Empty);
+//  rpc GetPlayers() returns ()
+}
