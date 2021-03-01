@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+message TestStruct {
+  message KeyValue {
+    string key = 1;
+    string value = 2;
+  }
+  string words = 1;
+  repeated int32 list = 2;
+  repeated KeyValue dict = 3;
+  int32 int = 4;
+  double float = 5;
+}
+
