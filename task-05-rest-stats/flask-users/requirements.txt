@@ -1,0 +1,7 @@
+Flask==1.1.2
+requests==2.22.0
+Flask-Cors==3.0.8
+Flask-SQLAlchemy==2.4.1
+Flask-JWT-Extended==3.24.1
+reportlab==3.5.59
+pika==1.2.0
