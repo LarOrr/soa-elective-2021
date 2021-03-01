@@ -22,6 +22,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 # TODO This should be hidden
 app.config['JWT_SECRET_KEY'] = 'Super_Secret_JWT_KEY'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False
+# If config is off - everyone can access anything
+if not config.require_auth:
+    jwt_required = lambda fn: fn
 # Database manager
 # db = SQLAlchemy(app)
 db.init_app(app)
@@ -63,6 +66,9 @@ def check_access(user_id: int):
     If not - returns code 403.
     """
     # id of authorized user account
+    if not config.require_auth:
+        return
+
     current_id = get_jwt_identity()
     # If it's not account of this user then return 403 Forbidden
     if current_id != user_id:
@@ -140,7 +146,7 @@ def patch_place(id: int):
 
 #
 @app.route(f'/{USERS_URI}/<id>', methods=['DELETE'])
-# TODO @jwt_required
+@jwt_required
 def delete_user(id: int):
     """
     Deletes user with the id
@@ -148,7 +154,7 @@ def delete_user(id: int):
     :return info about deleted user
     """
     id = int(id)
-    # check_access(id)
+    check_access(id)
     # TODO use try except to catch 404 instead
     user: User = User.query.get(id)
     if not user:
@@ -161,11 +167,13 @@ def delete_user(id: int):
 
 # region --- stats ---
 @app.route(f'/{USERS_URI}/<user_id>/stats', methods=['GET'])
-# TODO JWT
+@jwt_required
 def get_stats(user_id: int):
     """
     :return: stats of user
     """
+    user_id = int(user_id)
+    check_access(user_id)
     u = User.query.get(user_id)
     if u is None:
         return http_error('No such user', 404)
@@ -173,13 +181,14 @@ def get_stats(user_id: int):
 
 
 @app.route(f'/{USERS_URI}/<user_id>/stats', methods=['PUT', 'PATCH'])
-# TODO JWT
+@jwt_required
 def update_stats(user_id: int):
     """
     Update stats of user
     :return: updated stats
     """
-    # check_access(id)
+    user_id = int(user_id)
+    check_access(user_id)
     u: User = User.query.get(user_id)
     if u is None:
         return http_error('No such user', 404)
@@ -189,13 +198,14 @@ def update_stats(user_id: int):
 
 
 @app.route(f'/{USERS_URI}/<user_id>/pdf', methods=['POST'])
-# TODO JWT
+@jwt_required
 def request_stats_file(user_id: int):
     """
     Creates request for generating pdf file with user stats
     :return: url for GET, where the pdf will be available
     """
-    # check_access(id)
+    user_id = int(user_id)
+    check_access(user_id)
     user: User = User.query.get(user_id)
     if user is None:
         return http_error('No such user', 404)
@@ -208,12 +218,13 @@ def request_stats_file(user_id: int):
 
 # region --- pdf generation ---
 @app.route(f'/{USERS_URI}/<user_id>/pdf', methods=['GET'])
-# TODO JWT
+@jwt_required
 def get_stats_file(user_id: int):
     """
     :returns previously generated pdf file with stats
     """
-    # check_access(id)
+    user_id = int(user_id)
+    check_access(user_id)
     user: User = User.query.get(user_id)
     if user is None:
         return http_error('No such user', 404)

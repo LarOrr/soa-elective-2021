@@ -5,6 +5,8 @@
 #  Local
 address = 'localhost'
 mq_address = 'localhost'
+# Set to False to allow anyone to access everything (for debug purposes)
+require_auth = True
 
 port = 5000
 debug = True
