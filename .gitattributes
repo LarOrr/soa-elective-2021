@@ -1,1 +1,2 @@
-task-06-graphql/*.py linguist-detectable=false
+./task-06-graphql/python-client/*.py linguist-detectable=false
+./task-06-graphql/python-server/*.py linguist-detectable=false
