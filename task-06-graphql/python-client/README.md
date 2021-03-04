@@ -13,7 +13,7 @@ or `pip install --no-cache-dir -r requirements.txt`
 
 ### Commands
 + Enter 'exit' to exit the program
-+ Enter 'games <optional:finished (bool)>' to get list of games
++ Enter 'games <optional:finished (bool)>' to get list of games. Note finished must be 'true' or 'false'.
 + Enter 'game <game_id (int)>' to get game
 + Enter 'game <game_id (int)> score' to get score of the game
 + Enter 'addComment <game_id (int)> <comment (str)>' to comment the game

@@ -18,7 +18,7 @@ Run with docker:
 + Get all unfinished games:
 ```graphql
 {
-  games(finished:true) {
+  games(finished:false) {
     id
     finished
     scoreboard {
